@@ -20,6 +20,9 @@ env:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        platform: ["linux/amd64", "linux/arm64"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -38,4 +41,4 @@ jobs:
       - name: Publish base image
         run: docker push ghcr.io/emfcamp/website-base:latest
       - name: Build base-dev image
-        run: docker buildx build -t ghcr.io/emfcamp/website-base-dev:latest -f ./docker/Dockerfile.base-dev --push --platform=linux/amd64,linux/arm64 .
+        run: docker buildx build -t ghcr.io/emfcamp/website-base-dev:latest -f ./docker/Dockerfile.base-dev --push --platform=${{ matrix.platform }} .
